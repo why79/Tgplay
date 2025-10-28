@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Redirecting...</title>
+    <script type="text/javascript">
+        
+        function redirect() {
+            
+            const queryString = window.location.search;
+            
+            const urlParams = new URLSearchParams(queryString);
+            
+            const deepLink = urlParams.get('url');
+
+            
+            if (deepLink) {
+                window.location.href = deepLink;
+            } else {
+                
+                document.body.innerText = "Error: No redirection URL was provided.";
+            }
+        }
+    </script>
+</head>
+<body onload="redirect()">
+    <p>Please wait, you are being redirected to the app...</p>
+</body>
+</html>
