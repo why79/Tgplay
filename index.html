@@ -5,66 +5,109 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MOVIESFLIXX Redirect</title>
   <style>
-    body {
+    * {
       margin: 0;
       padding: 0;
-      background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
+      box-sizing: border-box;
+    }
+
+    body {
+      background: radial-gradient(circle at top left, #0a0a0a, #000000);
       color: #fff;
-      font-family: 'Poppins', sans-serif;
+      font-family: "Poppins", sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    header {
+      margin-top: 30px;
+    }
+
+    header h1 {
+      font-size: 2.4rem;
+      background: linear-gradient(90deg, #ff3c00, #ff004c, #ff005c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+    }
+
+    main {
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      text-align: center;
-      flex-direction: column;
+      flex-grow: 1;
+      width: 100%;
     }
 
-    h1 {
-      font-size: 2.2rem;
-      background: linear-gradient(90deg, #ff0000, #ff4d4d);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 10px;
-      letter-spacing: 1px;
-    }
-
-    p {
-      font-size: 1rem;
-      color: #ccc;
+    .message-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      box-shadow: 0 4px 25px rgba(255, 0, 50, 0.2);
+      padding: 25px 20px;
       max-width: 85%;
-      margin: 0 auto 20px;
-      line-height: 1.5;
+      animation: fadeIn 0.8s ease-in-out forwards;
+    }
+
+    .message-box p {
+      font-size: 1rem;
+      color: #ddd;
+      line-height: 1.6;
     }
 
     footer {
-      position: absolute;
-      bottom: 15px;
+      margin-bottom: 20px;
       font-size: 0.9rem;
-      color: #888;
+      color: #aaa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
 
-    a {
+    footer a {
       color: #ff4d4d;
       text-decoration: none;
-      margin-left: 6px;
       display: inline-flex;
       align-items: center;
+      gap: 4px;
+      transition: 0.3s;
     }
 
-    a:hover {
+    footer a:hover {
       text-decoration: underline;
+      color: #ff6666;
     }
 
     .telegram-icon {
-      width: 16px;
-      height: 16px;
-      margin-right: 4px;
+      width: 18px;
+      height: 18px;
+      vertical-align: middle;
       filter: brightness(1.2);
     }
 
     #message-container {
       display: none;
-      animation: fadeIn 1s ease-in-out forwards;
+      width: 100%;
+      height: 100%;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-size: 1.1rem;
+      color: #bbb;
     }
 
     @keyframes fadeIn {
@@ -72,39 +115,63 @@
       to { opacity: 1; transform: translateY(0); }
     }
   </style>
+
   <script>
     function redirect() {
       const urlParams = new URLSearchParams(window.location.search);
-      const deepLink = urlParams.get('url');
+      const deepLink = urlParams.get("url");
 
       if (deepLink) {
         // Try to open the app instantly
         window.location.href = deepLink;
 
-        // If app not installed, show message after 3 seconds
+        // If not installed, show fallback after 3 seconds
         setTimeout(() => {
           document.getElementById("loading").style.display = "none";
-          document.getElementById("message-container").style.display = "block";
+          document.getElementById("message-container").style.display = "flex";
         }, 3000);
       } else {
-        document.body.innerHTML = "<h2>Error: No redirection URL was provided.</h2>";
+        document.body.innerHTML =
+          "<h2 style='color:white; text-align:center;'>Error: No redirection URL provided.</h2>";
       }
     }
   </script>
 </head>
+
 <body onload="redirect()">
   <div id="loading">
-    <p>Please wait, redirecting to the MOVIESFLIXX app...</p>
+    <p>Redirecting to the MOVIESFLIXX app...</p>
   </div>
 
   <div id="message-container">
-    <h1>MOVIESFLIXX</h1>
-    <p>
-      Oops... It looks like you don’t have the MOVIESFLIXX app installed.<br>
-      For the best experience, please install the app first or contact the person who shared this link with you.<br>
-      Thank you!
-    </p>
+    <header>
+      <h1>MOVIESFLIXX</h1>
+    </header>
+
+    <main>
+      <div class="message-box">
+        <p>
+          Oops... It looks like you don’t have the <strong>MOVIESFLIXX</strong> app installed.<br><br>
+          For the best experience, please install the app first or contact the person who shared this link with you.<br><br>
+          Thank you!
+        </p>
+      </div>
+    </main>
+
     <footer>
+      <span>Need help?</span>
+      <a href="https://t.me/FL20205" target="_blank">
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg"
+          class="telegram-icon"
+          alt="Telegram"
+        />
+        Contact Owner
+      </a>
+    </footer>
+  </div>
+</body>
+</html>    <footer>
       <span>Need help?</span>
       <a href="https://t.me/FL20205" target="_blank">
         <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" class="telegram-icon" alt="Telegram">
