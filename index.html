@@ -24,7 +24,7 @@
       overflow: hidden;
     }
 
-    /* --- UPDATED MESSAGE CONTAINER --- */
+    /* --- REVERTED MESSAGE CONTAINER --- */
     #message-container {
       display: none;
       width: 100%;
@@ -32,8 +32,7 @@
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      /* Adjusted padding to prevent footer from being cut off */
-      padding: 30px 15px 20px; 
+      padding: 30px 0; /* Reverted back to original */
     }
 
     header h1 {
@@ -69,6 +68,7 @@
       line-height: 1.6;
     }
 
+    /* --- UPDATED FOOTER --- */
     footer {
       width: 100%;
       text-align: center;
@@ -78,6 +78,8 @@
       flex-direction: column;
       align-items: center;
       gap: 10px;
+      position: relative; /* Added to allow shifting */
+      bottom: 10px;      /* Shifts the footer 10px up */
     }
 
     footer a {
