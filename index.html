@@ -15,17 +15,17 @@
       background: radial-gradient(circle at top left, #0a0a0a, #000000);
       color: #fff;
       font-family: "Poppins", sans-serif;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
       align-items: center;
       text-align: center;
       overflow: hidden;
+      justify-content: space-between;
     }
 
     header {
-      margin-top: 30px;
+      margin-top: 25px;
     }
 
     header h1 {
@@ -35,13 +35,23 @@
       -webkit-text-fill-color: transparent;
       font-weight: 700;
       letter-spacing: 1.5px;
+      animation: glow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 5px #ff3c00, 0 0 10px #ff004c;
+      }
+      to {
+        text-shadow: 0 0 20px #ff4d6d, 0 0 30px #ff004c;
+      }
     }
 
     main {
+      flex: 1;
       display: flex;
       justify-content: center;
       align-items: center;
-      flex-grow: 1;
       width: 100%;
     }
 
@@ -49,34 +59,34 @@
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 16px;
-      box-shadow: 0 4px 25px rgba(255, 0, 50, 0.2);
+      box-shadow: 0 4px 25px rgba(255, 0, 50, 0.25);
       padding: 25px 20px;
-      max-width: 85%;
-      animation: fadeIn 0.8s ease-in-out forwards;
+      width: 85%;
+      max-width: 400px;
+      animation: fadeIn 1s ease-in-out forwards;
     }
 
     .message-box p {
       font-size: 1rem;
-      color: #ddd;
+      color: #e5e5e5;
       line-height: 1.6;
     }
 
     footer {
-      margin-bottom: 20px;
+      width: 100%;
+      text-align: center;
       font-size: 0.9rem;
-      color: #aaa;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
+      color: #bbb;
+      margin-bottom: 15px;
     }
 
     footer a {
       color: #ff4d4d;
       text-decoration: none;
+      font-weight: 500;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
       transition: 0.3s;
     }
 
@@ -122,10 +132,8 @@
       const deepLink = urlParams.get("url");
 
       if (deepLink) {
-        // Try to open the app instantly
         window.location.href = deepLink;
 
-        // If not installed, show fallback after 3 seconds
         setTimeout(() => {
           document.getElementById("loading").style.display = "none";
           document.getElementById("message-container").style.display = "flex";
@@ -168,7 +176,7 @@
           class="telegram-icon"
           alt="Telegram"
         />
-        Contact Owner
+        <span>Contact Owner</span>
       </a>
     </footer>
   </div>
