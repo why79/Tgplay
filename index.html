@@ -1,179 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MOVIESFLIXX Redirect</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MOVIESFLIXX</title>
 
-    body {
-      background: radial-gradient(circle at top left, #0a0a0a, #000000);
-      color: #fff;
-      font-family: "Poppins", sans-serif;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      overflow: hidden;
-    }
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
 
-    /* --- REVERTED MESSAGE CONTAINER --- */
-    #message-container {
-      display: none;
-      width: 100%;
-      height: 100%;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-      padding: 30px 0; /* Reverted back to original */
-    }
+body{
+  min-height:100vh;
+  background:radial-gradient(circle at top left,#1a0008,#000);
+  color:#fff;
+  font-family:Poppins,Arial,sans-serif;
+  display:flex;
+  flex-direction:column;
+}
 
-    header h1 {
-      font-size: 2.4rem;
-      background: linear-gradient(90deg, #ff3c00, #ff004c, #ff005c);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-    }
+header{
+  padding:18px;
+  text-align:center;
+}
 
-    main {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-grow: 1;
-      width: 100%;
-    }
+header h1{
+  font-size:2.3rem;
+  background:linear-gradient(90deg,#ff3c00,#ff004c,#ff005c);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  letter-spacing:2px;
+}
 
-    .message-box {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      box-shadow: 0 4px 25px rgba(255, 0, 50, 0.25);
-      padding: 25px 20px;
-      max-width: 85%;
-      animation: fadeIn 0.8s ease-in-out forwards;
-    }
+main{
+  flex:1;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:15px;
+}
 
-    .message-box p {
-      font-size: 1rem;
-      color: #e5e5e5;
-      line-height: 1.6;
-    }
+.card{
+  width:100%;
+  max-width:430px;
+  background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:18px;
+  padding:25px;
+  text-align:center;
+  box-shadow:0 10px 40px rgba(255,0,80,.35);
+  animation:fade .6s ease;
+}
 
-    /* --- UPDATED FOOTER --- */
-    footer {
-      width: 100%;
-      text-align: center;
-      font-size: 0.9rem;
-      color: #bbb;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      position: relative; /* Added to allow shifting */
-      bottom: 25px;      /* Shifts the footer 10px up */
-    }
+.card p{
+  color:#eaeaea;
+  line-height:1.6;
+  margin-bottom:18px;
+}
 
-    footer a {
-      color: #ff4d4d;
-      text-decoration: none;
-      font-weight: 500;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      transition: color 0.3s, text-decoration 0.3s;
-      padding: 5px 10px;
-      border-radius: 8px;
-    }
+.card strong{color:#ff4d4d}
 
-    footer a:hover {
-      text-decoration: underline;
-      color: #ff6666;
-    }
+.btn{
+  width:100%;
+  padding:14px;
+  margin-top:12px;
+  border:none;
+  border-radius:10px;
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer;
+}
 
-    .telegram-icon {
-      width: 18px;
-      height: 18px;
-      vertical-align: middle;
-      filter: brightness(1.2);
-    }
+.btn-app{
+  background:linear-gradient(90deg,#00e676,#00c853);
+  color:#000;
+}
 
-    #loading {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      font-size: 1.1rem;
-      color: #bbb;
-    }
+.btn-download{
+  background:linear-gradient(90deg,#ff9100,#ff3d00);
+  color:#000;
+}
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
+.btn-browser{
+  background:linear-gradient(90deg,#2979ff,#00b0ff);
+  color:#fff;
+}
 
-  <script>
-    function redirect() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const deepLink = urlParams.get("url");
+#loading{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:1.1rem;
+  color:#bbb;
+}
 
-      if (deepLink) {
-        window.location.href = deepLink;
+#player{
+  display:none;
+  flex-direction:column;
+  width:100%;
+  height:100%;
+}
 
-        setTimeout(() => {
-          document.getElementById("loading").style.display = "none";
-          document.getElementById("message-container").style.display = "flex";
-        }, 3000);
-      } else {
-        document.body.innerHTML =
-          "<h2 style='color:white; text-align:center;'>Error: No redirection URL provided.</h2>";
-      }
-    }
-  </script>
+#player iframe{
+  flex:1;
+  width:100%;
+  border:none;
+  border-radius:12px;
+  box-shadow:0 8px 35px rgba(0,0,0,.6);
+}
+
+footer{
+  text-align:center;
+  padding:14px;
+  font-size:.8rem;
+  color:#aaa;
+}
+
+@keyframes fade{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+</style>
+
+<script>
+let videoUrl = "";
+
+function init(){
+  const params = new URLSearchParams(window.location.search);
+  videoUrl = params.get("url");
+
+  if(!videoUrl){
+    document.body.innerHTML="<h2 style='text-align:center'>Invalid or missing link</h2>";
+    return;
+  }
+
+  // Auto try opening app
+  window.location.href = videoUrl;
+
+  // If app not opened
+  setTimeout(()=>{
+    document.getElementById("loading").style.display="none";
+    document.getElementById("chooser").style.display="block";
+  },3000);
+}
+
+function openApp(){
+  window.location.href = videoUrl;
+
+  // show fallback again if still not installed
+  setTimeout(()=>{
+    document.getElementById("chooser").style.display="block";
+  },2000);
+}
+
+function playBrowser(){
+  document.getElementById("chooser").style.display="none";
+  document.getElementById("player").style.display="flex";
+  document.getElementById("iframe").src = videoUrl;
+}
+</script>
+
 </head>
 
-<body onload="redirect()">
-  <div id="loading">
-    <p><span style="color: red; font-weight: bold;">OPENING MOVIESFLIXX APP...</span></p>
-  </div>
+<body onload="init()">
 
-  <div id="message-container">
-    <header>
-      <h1>MOVIESFLIXX</h1>
-    </header>
+<div id="loading">
+  <b style="color:#ff4d4d">OPENING MOVIESFLIXX APP...</b>
+</div>
 
-    <main>
-      <div class="message-box">
-        <p>
-          Oops... It looks like you don’t have the 
-          <strong style="color: red;">MOVIESFLIXX APP</strong> installed.<br><br>
-          For the best experience, 
-          <strong style="color: red;">please install the app</strong> first or contact the person who shared this link with you.<br><br>
-          <u>Thank you!</u>
-        </p>
-      </div>
-    </main>
+<header>
+  <h1>MOVIESFLIXX</h1>
+</header>
 
-    <footer>
-      <span>Need help?</span> 
-      <a href="https://t.me/FL20205" target="_blank">
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg"
-          class="telegram-icon"
-          alt="Telegram"
-        />
-        <span>Contact Owner</span>
-      </a>
-    </footer>
-  </div>
+<main>
+
+<div class="card" id="chooser" style="display:none">
+  <p>
+    Looks like you don’t have the<br>
+    <strong>MOVIESFLIXX App</strong> installed.<br><br>
+    Choose how you want to continue:
+  </p>
+
+  <button class="btn btn-app" onclick="openApp()">
+    ▶ Open in App (No Ads)
+  </button>
+
+  <button class="btn btn-download" onclick="window.location.href='https://drive.google.com/file/d/14UMF8mcNYopqJ5AvtTMwAugOirP8xYpH/view?usp=drivesdk'">
+    ⬇ Download App
+  </button>
+
+  <button class="btn btn-browser" onclick="playBrowser()">
+    🌐 Play in Browser (With 2-3 Ads)
+  </button>
+</div>
+
+<div id="player">
+  <iframe id="iframe" allowfullscreen></iframe>
+</div>
+
+</main>
+
+<footer>
+  Powered by <strong>GM</strong>
+</footer>
+
 </body>
 </html>
