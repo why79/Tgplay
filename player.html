@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MOVIESFLIXX Player</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 html,body{
@@ -22,14 +22,20 @@ iframe{
 
 <body>
 
-<iframe id="frame" allowfullscreen></iframe>
+<iframe
+  src=""
+  id="frame"
+  allow="autoplay; fullscreen; encrypted-media"
+  allowfullscreen
+  referrerpolicy="no-referrer">
+</iframe>
 
 <script>
 const params = new URLSearchParams(window.location.search);
-const videoUrl = params.get("url");
+const url = params.get("url");
 
-if(videoUrl){
-  document.getElementById("frame").src = videoUrl;
+if(url){
+  document.getElementById("frame").src = url;
 }else{
   document.body.innerHTML =
     "<h2 style='color:white;text-align:center'>Invalid video link</h2>";
