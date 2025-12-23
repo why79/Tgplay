@@ -31,14 +31,16 @@ iframe{
 
 <script>
 const params = new URLSearchParams(window.location.search);
-const url = params.get("url");
+const raw = params.get("url");
 
-if(url){
-  document.getElementById("frame").src = url;
+if(raw){
+  const decoded = decodeURIComponent(raw);
+  document.getElementById("frame").src = decoded;
 }else{
   document.body.innerHTML =
     "<h2 style='color:white;text-align:center;margin-top:40px'>Invalid video link</h2>";
 }
+
 </script>
 
 </body>
