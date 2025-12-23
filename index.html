@@ -130,10 +130,11 @@ function openApp(){
 }
 
 function playBrowser(){
-  const encoded = encodeURIComponent(browserUrl);
+  const encoded = encodeURIComponent(encodeURIComponent(browserUrl));
   window.location.href =
     "https://why79.github.io/Tgplay/player.html?url=" + encoded;
 }
+
 </script>
 </head>
 
