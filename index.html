@@ -137,12 +137,10 @@ function openApp(){
 }
 
 function playBrowser(){
-  document.getElementById("chooser").style.display = "none";
-  document.getElementById("player").style.display = "flex";
-
-  const iframe = document.getElementById("iframe");
-  iframe.src = videoUrl;
+  const encoded = encodeURIComponent(videoUrl);
+  window.location.href = "browser.html?url=" + encoded;
 }
+
 </script>
 </head>
 
