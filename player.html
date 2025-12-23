@@ -23,7 +23,6 @@ iframe{
 <body>
 
 <iframe
-  src=""
   id="frame"
   allow="autoplay; fullscreen; encrypted-media"
   allowfullscreen
@@ -38,7 +37,7 @@ if(url){
   document.getElementById("frame").src = url;
 }else{
   document.body.innerHTML =
-    "<h2 style='color:white;text-align:center'>Invalid video link </h2>";
+    "<h2 style='color:white;text-align:center;margin-top:40px'>Invalid video link</h2>";
 }
 </script>
 
