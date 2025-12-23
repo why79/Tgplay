@@ -10,7 +10,7 @@
 
 body{
   min-height:100vh;
-  background:radial-gradient(circle at top left,#1a0008,#000);
+  background:radial-gradient(circle at top left,#14000a,#000);
   color:#fff;
   font-family:Poppins,Arial,sans-serif;
   display:flex;
@@ -40,11 +40,11 @@ main{
 
 .card{
   width:100%;
-  max-width:430px;
+  max-width:440px;
   background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
   border:1px solid rgba(255,255,255,.12);
   border-radius:18px;
-  padding:25px;
+  padding:26px;
   text-align:center;
   box-shadow:0 10px 40px rgba(255,0,80,.35);
   animation:fade .6s ease;
@@ -84,15 +84,6 @@ main{
   color:#fff;
 }
 
-#loading{
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-size:1.1rem;
-  color:#bbb;
-}
-
 #player{
   display:none;
   flex-direction:column;
@@ -104,7 +95,7 @@ main{
   flex:1;
   width:100%;
   border:none;
-  border-radius:12px;
+  border-radius:14px;
   box-shadow:0 8px 35px rgba(0,0,0,.6);
 }
 
@@ -129,43 +120,33 @@ function init(){
   videoUrl = params.get("url");
 
   if(!videoUrl){
-    document.body.innerHTML="<h2 style='text-align:center'>Invalid or missing link</h2>";
+    document.body.innerHTML =
+      "<h2 style='text-align:center;margin-top:40px'>Invalid or missing link</h2>";
     return;
   }
-
-  // Auto try opening app
-  window.location.href = videoUrl;
-
-  // If app not opened
-  setTimeout(()=>{
-    document.getElementById("loading").style.display="none";
-    document.getElementById("chooser").style.display="block";
-  },3000);
 }
 
 function openApp(){
+  // Deep link / app intent
   window.location.href = videoUrl;
 
-  // show fallback again if still not installed
+  // If app not installed, show fallback again
   setTimeout(()=>{
-    document.getElementById("chooser").style.display="block";
+    document.getElementById("chooser").style.display = "block";
   },2000);
 }
 
 function playBrowser(){
-  document.getElementById("chooser").style.display="none";
-  document.getElementById("player").style.display="flex";
-  document.getElementById("iframe").src = videoUrl;
+  document.getElementById("chooser").style.display = "none";
+  document.getElementById("player").style.display = "flex";
+
+  const iframe = document.getElementById("iframe");
+  iframe.src = videoUrl;
 }
 </script>
-
 </head>
 
 <body onload="init()">
-
-<div id="loading">
-  <b style="color:#ff4d4d">OPENING MOVIESFLIXX APP...</b>
-</div>
 
 <header>
   <h1>MOVIESFLIXX</h1>
@@ -173,7 +154,8 @@ function playBrowser(){
 
 <main>
 
-<div class="card" id="chooser" style="display:none">
+<!-- FALLBACK / CHOICE CARD -->
+<div class="card" id="chooser">
   <p>
     Looks like you don’t have the<br>
     <strong>MOVIESFLIXX App</strong> installed.<br><br>
@@ -184,17 +166,25 @@ function playBrowser(){
     ▶ Open in App (No Ads)
   </button>
 
-  <button class="btn btn-download" onclick="window.location.href='https://drive.google.com/file/d/14UMF8mcNYopqJ5AvtTMwAugOirP8xYpH/view?usp=drivesdk'">
+  <button class="btn btn-download"
+    onclick="window.location.href='PASTE_YOUR_APP_DOWNLOAD_LINK_HERE'">
     ⬇ Download App
   </button>
 
   <button class="btn btn-browser" onclick="playBrowser()">
-    🌐 Play in Browser (With 2-3 Ads)
+    🌐 Play in Browser (With Ads)
   </button>
 </div>
 
+<!-- BROWSER PLAYER -->
 <div id="player">
-  <iframe id="iframe" allowfullscreen></iframe>
+  <iframe
+    id="iframe"
+    allow="autoplay; fullscreen; encrypted-media"
+    allowfullscreen
+    referrerpolicy="no-referrer"
+    sandbox="allow-scripts allow-same-origin allow-forms allow-presentation">
+  </iframe>
 </div>
 
 </main>
