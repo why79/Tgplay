@@ -11,16 +11,120 @@ html,body{
   padding:0;
   height:100%;
   background:#000;
+  overflow:hidden;
+  font-family:Poppins,Arial,sans-serif;
 }
-iframe{
+
+/* iframe */
+#frame{
   width:100%;
   height:100%;
   border:none;
+}
+
+/* ===== Overlay ===== */
+#pcOverlay{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:
+    radial-gradient(circle at top,#220010,#000);
+  animation:fadeIn .6s ease;
+}
+
+.overlay-card{
+  max-width:520px;
+  width:92%;
+  padding:28px;
+  border-radius:20px;
+  background:linear-gradient(
+    180deg,
+    rgba(255,255,255,.10),
+    rgba(255,255,255,.03)
+  );
+  border:1px solid rgba(255,255,255,.15);
+  box-shadow:0 20px 60px rgba(255,0,80,.35);
+  text-align:center;
+}
+
+.overlay-card h2{
+  margin-bottom:14px;
+  font-size:1.8rem;
+  background:linear-gradient(90deg,#ff3c00,#ff005c);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.overlay-card ul{
+  text-align:left;
+  margin:18px 0;
+  padding-left:18px;
+  color:#eaeaea;
+  line-height:1.7;
+  font-size:14px;
+}
+
+.overlay-card ul li{
+  margin-bottom:8px;
+}
+
+.play-btn{
+  width:100%;
+  padding:14px;
+  margin-top:16px;
+  border:none;
+  border-radius:12px;
+  font-size:16px;
+  font-weight:600;
+  cursor:pointer;
+  background:linear-gradient(90deg,#00e676,#00c853);
+  color:#000;
+  transition:.25s;
+}
+
+.play-btn:hover{
+  transform:scale(1.03);
+}
+
+.note{
+  margin-top:10px;
+  font-size:12px;
+  color:#aaa;
+}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(25px)}
+  to{opacity:1;transform:translateY(0)}
 }
 </style>
 </head>
 
 <body>
+
+<!-- PC Overlay -->
+<div id="pcOverlay" style="display:none">
+  <div class="overlay-card">
+    <h2>Ready to Watch?</h2>
+
+    <ul>
+      <li><strong>F11</strong> → Full screen view (hide address bar)</li>
+      <li><strong>+</strong> / <strong>-</strong> → Zoom in / out</li>
+      <li><strong>0</strong> → Reset zoom (100%)</li>
+      <li>Best viewed in <strong>Landscape</strong></li>
+    </ul>
+
+    <button class="play-btn" onclick="startPlayback()">
+      ▶ Play Now
+    </button>
+
+    <div class="note">
+      PC browsers only • Optimized experience
+    </div>
+  </div>
+</div>
 
 <iframe
   id="frame"
@@ -30,17 +134,57 @@ iframe{
 </iframe>
 
 <script>
+/* ===== Load video ===== */
 const params = new URLSearchParams(window.location.search);
 const raw = params.get("url");
+const frame = document.getElementById("frame");
 
 if(raw){
-  const decoded = decodeURIComponent(raw);
-  document.getElementById("frame").src = decoded;
+  frame.src = decodeURIComponent(raw);
 }else{
   document.body.innerHTML =
     "<h2 style='color:white;text-align:center;margin-top:40px'>Invalid video link</h2>";
 }
 
+/* ===== Detect PC ===== */
+function isPC(){
+  return window.matchMedia("(pointer:fine)").matches;
+}
+
+/* ===== Overlay logic ===== */
+const overlay = document.getElementById("pcOverlay");
+
+if(isPC()){
+  overlay.style.display = "flex";
+}
+
+function startPlayback(){
+  overlay.style.display = "none";
+}
+
+/* ===== Keyboard Zoom ===== */
+let scale = 1;
+const minZoom = 1;
+const maxZoom = 2;
+const step = 0.1;
+
+function applyZoom(){
+  frame.style.transform = `scale(${scale})`;
+  frame.style.transformOrigin = "center center";
+}
+
+document.addEventListener("keydown", e=>{
+  if(e.key==="+" || e.key==="="){
+    if(scale < maxZoom){ scale += step; applyZoom(); }
+  }
+  if(e.key==="-" || e.key==="_"){
+    if(scale > minZoom){ scale -= step; applyZoom(); }
+  }
+  if(e.key==="0"){
+    scale = 1;
+    applyZoom();
+  }
+});
 </script>
 
 </body>
