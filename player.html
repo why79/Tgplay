@@ -20,7 +20,7 @@ html,body{
   color:#fff;
 }
 
-/* ===== Header ===== */
+/* ===== Header (PC only) ===== */
 header{
   position:fixed;
   top:0;
@@ -45,12 +45,12 @@ header h1{
   border:none;
 }
 
-/* ===== Overlay ===== */
+/* ===== PC Instruction Overlay ===== */
 #pcOverlay{
   position:fixed;
   inset:0;
   z-index:20;
-  display:flex;
+  display:none;
   justify-content:center;
   align-items:center;
   background:radial-gradient(circle at top,#220010,#000);
@@ -108,7 +108,7 @@ header h1{
   color:#000;
 }
 
-/* ===== Footer ===== */
+/* ===== Footer (PC only) ===== */
 footer{
   position:fixed;
   bottom:0;
@@ -142,7 +142,6 @@ footer .brand{
   -webkit-text-fill-color:transparent;
 }
 
-/* Telegram icon */
 .tg-icon{
   width:14px;
   height:14px;
@@ -153,25 +152,21 @@ footer .brand{
 
 <body>
 
-<header>
+<header id="pageHeader">
   <h1>MOVIESFLIXX</h1>
 </header>
 
-<!-- Instruction Overlay -->
+<!-- PC Instruction Overlay -->
 <div id="pcOverlay">
   <div class="overlay-card">
     <h2>Ready to Watch?</h2>
-
     <ul>
       <li><strong>F11 Key</strong> → Full Screen View (hide address bar)</li>
       <li>Don't Use <strong>Player Full Screen Button (not working)</strong></li>
-      <li>⚠ Only <strong>2–3 Popup Ads</strong> May Appear At The Start</li>
+      <li>⚠️ Only <strong>2–3 Popup Ads</strong> May Appear At The Start</li>
       <li>Only For <strong>Pc Browser</strong></li>
     </ul>
-
-    <button class="play-btn" onclick="startPlayback()">
-      ▶ Play Now
-    </button>
+    <button class="play-btn" onclick="startPlayback()">▶ Play Now</button>
   </div>
 </div>
 
@@ -183,15 +178,12 @@ footer .brand{
 </iframe>
 
 <footer id="pageFooter">
-  <!-- LEFT -->
   <a href="tg://resolve?domain=moviesflixx1">
     ➕ JOIN MOVIESFLIXX
   </a>
 
-  <!-- CENTER -->
   <div class="brand">POWERED BY GM</div>
 
-  <!-- RIGHT -->
   <a href="tg://resolve?domain=@FL20205">
     <svg class="tg-icon" viewBox="0 0 24 24">
       <path d="M9.9 15.6 9.5 20c.6 0 .9-.3 1.2-.6l2.8-2.6 5.8 4.2c1 .6 1.7.3 2-.9l3.6-17c.4-1.6-.6-2.2-1.6-1.8L1.2 9.2c-1.5.6-1.5 1.4-.3 1.8l5.4 1.7L19 5.8c.6-.4 1.1-.2.7.2"/>
@@ -203,17 +195,37 @@ footer .brand{
 <script>
 /* ===== Load video ===== */
 const url = new URLSearchParams(location.search).get("url");
+const frame = document.getElementById("frame");
+
 if(url){
-  document.getElementById("frame").src = decodeURIComponent(url);
+  frame.src = decodeURIComponent(url);
 }else{
   document.body.innerHTML =
     "<h2 style='color:white;text-align:center;margin-top:40px'>Invalid video link</h2>";
 }
 
-/* ===== Start playback ===== */
+/* ===== PC Browser Detection ===== */
+function isPCBrowser(){
+  return window.matchMedia("(pointer: fine) and (hover: hover)").matches;
+}
+
+const overlay = document.getElementById("pcOverlay");
+const header = document.getElementById("pageHeader");
+const footer = document.getElementById("pageFooter");
+
+/* ===== Apply device rules ===== */
+if(isPCBrowser()){
+  overlay.style.display = "flex";   // PC → show instructions
+}else{
+  // Mobile → hide everything except video
+  header.style.display = "none";
+  footer.style.display = "none";
+}
+
+/* ===== Play Now (PC only) ===== */
 function startPlayback(){
-  document.getElementById("pcOverlay").style.display = "none";
-  document.getElementById("pageFooter").classList.add("hide");
+  overlay.style.display = "none";
+  footer.classList.add("hide");
 }
 </script>
 
