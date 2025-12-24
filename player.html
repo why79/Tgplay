@@ -120,6 +120,12 @@ footer{
   font-size:12px;
   z-index:30;
   background:linear-gradient(to top,rgba(0,0,0,.6),transparent);
+  transition:opacity .3s ease;
+}
+
+footer.hide{
+  opacity:0;
+  pointer-events:none;
 }
 
 footer a{
@@ -157,10 +163,10 @@ footer .brand{
     <h2>Ready to Watch?</h2>
 
     <ul>
-      <li><strong>F11</strong> → Full screen view (hide address bar)</li>
-      <li>⚠ Only <strong>2–3 popup ads</strong> may appear at the start</li>
-      <li>Best viewed in <strong>Landscape</strong></li>
-      <li>Dont use player <strong>full screen button</strong></li>
+      <li><strong>F11 Key</strong> → Full Screen View (hide address bar)</li>
+      <li>Don't Use <strong>Player Full Screen Button (not working)</strong></li>
+      <li>⚠ Only <strong>2–3 Popup Ads</strong> May Appear At The Start</li>
+      <li>Only For <strong>Pc Browser</strong></li>
     </ul>
 
     <button class="play-btn" onclick="startPlayback()">
@@ -176,14 +182,14 @@ footer .brand{
   referrerpolicy="no-referrer">
 </iframe>
 
-<footer>
+<footer id="pageFooter">
   <!-- LEFT -->
   <a href="tg://resolve?domain=moviesflixx1">
-    ➕ Join MOVIESFLIXX
+    ➕ JOIN MOVIESFLIXX
   </a>
 
   <!-- CENTER -->
-  <div class="brand">Powered by GM</div>
+  <div class="brand">POWERED BY GM</div>
 
   <!-- RIGHT -->
   <a href="tg://resolve?domain=@FL20205">
@@ -206,7 +212,8 @@ if(url){
 
 /* ===== Start playback ===== */
 function startPlayback(){
-  document.getElementById("pcOverlay").style.display="none";
+  document.getElementById("pcOverlay").style.display = "none";
+  document.getElementById("pageFooter").classList.add("hide");
 }
 </script>
 
