@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>MOVIESFLIXX Player</title>
+<title>MOVIESFLIXX PLAYER</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -25,10 +25,16 @@ header{
   position:fixed;
   top:0;
   width:100%;
-  text-align:center;
-  padding:12px;
-  z-index:20;
+  padding:12px 16px;
+  z-index:30;
+  display:flex;
+  justify-content:center;
+  transition:.3s ease;
   background:linear-gradient(to bottom,rgba(0,0,0,.6),transparent);
+}
+
+header.fullscreen{
+  justify-content:flex-end;
 }
 
 header h1{
@@ -47,11 +53,19 @@ header h1{
   transform-origin:center center;
 }
 
+/* ===== Focus layer (IMPORTANT) ===== */
+#focusLayer{
+  position:fixed;
+  inset:0;
+  z-index:5;
+  background:transparent;
+}
+
 /* ===== Overlay ===== */
 #pcOverlay{
   position:fixed;
   inset:0;
-  z-index:10;
+  z-index:20;
   display:flex;
   justify-content:center;
   align-items:center;
@@ -70,7 +84,6 @@ header h1{
   );
   border:1px solid rgba(255,255,255,.18);
   box-shadow:0 20px 60px rgba(255,0,80,.35);
-  animation:fadeIn .6s ease;
 }
 
 .overlay-card h2{
@@ -83,12 +96,11 @@ header h1{
 }
 
 .overlay-card ul{
-  list-style:disc;
   padding-left:20px;
   margin:18px 0;
-  color:#eaeaea;
   font-size:14px;
   line-height:1.7;
+  color:#eaeaea;
 }
 
 .overlay-card li{
@@ -110,11 +122,6 @@ header h1{
   cursor:pointer;
   background:linear-gradient(90deg,#00e676,#00c853);
   color:#000;
-  transition:.25s;
-}
-
-.play-btn:hover{
-  transform:scale(1.03);
 }
 
 .note{
@@ -129,18 +136,27 @@ footer{
   position:fixed;
   bottom:0;
   width:100%;
+  padding:10px 16px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:10px 16px;
   font-size:12px;
+  z-index:30;
   background:linear-gradient(to top,rgba(0,0,0,.6),transparent);
-  z-index:20;
+  transition:.3s ease;
+}
+
+footer.hide{
+  opacity:0;
+  pointer-events:none;
 }
 
 footer a{
   color:#ddd;
   text-decoration:none;
+  display:flex;
+  align-items:center;
+  gap:6px;
 }
 
 footer .brand{
@@ -149,117 +165,88 @@ footer .brand{
   -webkit-text-fill-color:transparent;
 }
 
-/* ===== Animation ===== */
-@keyframes fadeIn{
-  from{opacity:0;transform:translateY(25px)}
-  to{opacity:1;transform:translateY(0)}
+/* Telegram icon */
+.tg-icon{
+  width:14px;
+  height:14px;
+  fill:#2aabee;
 }
 </style>
 </head>
 
 <body>
 
-<header>
+<header id="topHeader">
   <h1>MOVIESFLIXX</h1>
 </header>
 
-<!-- PC Overlay -->
-<div id="pcOverlay" style="display:none">
+<div id="pcOverlay">
   <div class="overlay-card">
     <h2>Ready to Watch?</h2>
-
     <ul>
-      <li><strong>F11</strong> → Full screen view (hide address bar)</li>
-      <li><strong>Alt + +</strong> / <strong>Alt + -</strong> → Zoom in / out</li>
-      <li><strong>Alt + 0</strong> → Reset zoom (100%)</li>
+      <li><strong>F11</strong> → Full screen view</li>
+      <li><strong>Alt + =</strong> / <strong>Alt + -</strong> → Zoom in / out</li>
+      <li><strong>Alt + 0</strong> → Reset zoom</li>
       <li>⚠ Only <strong>2–3 popup ads</strong> may appear at the start</li>
-      <li>Best viewed in <strong>Landscape</strong></li>
     </ul>
-
-    <button class="play-btn" onclick="startPlayback()">
-      ▶ Play Now
-    </button>
-
-    <div class="note">
-      PC browsers only • Optimized experience
-    </div>
+    <button class="play-btn" onclick="startPlayback()">▶ Play Now</button>
+    <div class="note">PC browsers only</div>
   </div>
 </div>
 
-<iframe
-  id="frame"
-  allow="autoplay; fullscreen; encrypted-media"
-  allowfullscreen
-  referrerpolicy="no-referrer">
-</iframe>
+<iframe id="frame"></iframe>
+<div id="focusLayer" tabindex="0"></div>
 
-<footer>
-  <!-- LEFT -->
+<footer id="pageFooter">
   <a href="https://t.me/Chat id: -1003065092960" target="_blank">
-    ➕ Join MOVIESFLIXX
+    ➕ JOIN MOVIESFLIXX
   </a>
 
-  <!-- CENTER -->
   <div class="brand">Powered by GM</div>
 
-  <!-- RIGHT -->
   <a href="https://t.me/@FL20205" target="_blank">
-    ✈ Contact Owner
+    <svg class="tg-icon" viewBox="0 0 24 24">
+      <path d="M9.9 15.6 9.5 20c.6 0 .9-.3 1.2-.6l2.8-2.6 5.8 4.2c1 .6 1.7.3 2-.9l3.6-17c.4-1.6-.6-2.2-1.6-1.8L1.2 9.2c-1.5.6-1.5 1.4-.3 1.8l5.4 1.7L19 5.8c.6-.4 1.1-.2.7.2"/>
+    </svg>
+    Contact Owner
   </a>
 </footer>
 
 <script>
 /* ===== Load video ===== */
-const params = new URLSearchParams(window.location.search);
-const raw = params.get("url");
-const frame = document.getElementById("frame");
+const url = new URLSearchParams(location.search).get("url");
+if(url) frame.src = decodeURIComponent(url);
 
-if(raw){
-  frame.src = decodeURIComponent(raw);
-}else{
-  document.body.innerHTML =
-    "<h2 style='color:white;text-align:center;margin-top:40px'>Invalid video link</h2>";
-}
-
-/* ===== PC detect ===== */
-function isPC(){
-  return window.matchMedia("(pointer:fine)").matches;
-}
-
-const overlay = document.getElementById("pcOverlay");
-if(isPC()){
-  overlay.style.display = "flex";
-}
-
+/* ===== Start playback ===== */
 function startPlayback(){
-  overlay.style.display = "none";
+  document.getElementById("pcOverlay").style.display="none";
+  document.getElementById("pageFooter").classList.add("hide");
+  document.getElementById("focusLayer").focus();
 }
 
-/* ===== Keyboard Zoom (Conflict-free) ===== */
+/* ===== Keyboard Zoom (FINAL FIX) ===== */
 let scale = 1;
-const minZoom = 1;
-const maxZoom = 2;
-const step = 0.1;
+const min = 1, max = 2, step = 0.1;
 
-function applyZoom(){
-  frame.style.transform = `scale(${scale})`;
-}
-
-document.addEventListener("keydown", e=>{
+window.addEventListener("keydown", e=>{
   if(!e.altKey) return;
 
-  if(e.key === "+" || e.key === "="){
-    if(scale < maxZoom){ scale += step; applyZoom(); }
+  if(e.key==="="){
+    scale = Math.min(scale+step,max);
   }
-
-  if(e.key === "-" || e.key === "_"){
-    if(scale > minZoom){ scale -= step; applyZoom(); }
+  if(e.key==="-"){
+    scale = Math.max(scale-step,min);
   }
-
-  if(e.key === "0"){
+  if(e.key==="0"){
     scale = 1;
-    applyZoom();
   }
+  frame.style.transform = `scale(${scale})`;
+}, true);
+
+/* ===== Detect fullscreen ===== */
+document.addEventListener("fullscreenchange",()=>{
+  document.getElementById("topHeader")
+    .classList.toggle("fullscreen",document.fullscreenElement);
 });
 </script>
 
